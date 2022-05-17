@@ -17,7 +17,7 @@ public class QuizClientHandler implements Runnable{
     @Override
     public void run() {
         try {
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(client.getOutputStream()));
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true);
             BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
             System.out.println("Establishing connection with new Client.");
             for (int i = 0; i != 3; i++) {

@@ -12,7 +12,7 @@ public class QuizClient implements Runnable {
         this.uniqueID = "QC-" + System.currentTimeMillis();
         try {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
