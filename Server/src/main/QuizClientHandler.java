@@ -1,26 +1,17 @@
 package main;
 
 import main.tasks.ITask;
-import main.tasks.RandomCalculationTask;
-import main.tasks.SchoolNameTask;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.io.*;
 import java.net.Socket;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class QuizClientHandler implements Runnable {
     private final Socket client;
+    private final QuestionHandler questionHandler;
 
-    public QuizClientHandler(Socket client) {
+    public QuizClientHandler(Socket client, QuestionHandler questionHandler) {
         this.client = client;
+        this.questionHandler = questionHandler;
     }
 
     public Socket getClient() {
@@ -34,15 +25,7 @@ public class QuizClientHandler implements Runnable {
             BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
             System.out.println("Establishing connection with new Client.");
 
-           /* List<ITask> questions = new ArrayList<>();
-            File file = new File(Objects.requireNonNull(Main.class.getClassLoader().getResource("questions.json")).toURI());
-            questions = (List<ITask>) parse(file);
-            for (ITask tt :
-                    questions) {
-                System.out.println(tt);
-            }*/
-
-            ITask task = System.currentTimeMillis() % 2 == 0 ? new RandomCalculationTask().generateTask() : new SchoolNameTask().generateTask();
+            ITask task = questionHandler.getTask();
             System.out.println("Task: " + task.getTaskName() + "; Question: " + task.getTaskText() + "; Answer: " + task.getTaskAnswer());
             writer.write(task.getTaskText());
             writer.println();
@@ -65,7 +48,7 @@ public class QuizClientHandler implements Runnable {
                     break;
                 }
 
-                task = System.currentTimeMillis() % 2 == 0 ? new RandomCalculationTask().generateTask() : new SchoolNameTask().generateTask();
+                task = questionHandler.getTask();
                 System.out.println("Task: " + task.getTaskName() + "; Question: " + task.getTaskText() + "; Answer: " + task.getTaskAnswer());
                 writer.write(task.getTaskText());
                 writer.println();
@@ -86,31 +69,6 @@ public class QuizClientHandler implements Runnable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    }
-
-    public Map parse(File f) throws ScriptException, IOException {
-        ScriptEngine scriptEngine;
-        String json;
-
-        ScriptEngineManager sem = new ScriptEngineManager();
-        scriptEngine = sem.getEngineByName("javascript");
-        json = new String(Files.readAllBytes(f.toPath()));
-
-        String script = "Java.asJSONCompatible(" + json + ")";
-        Object result = scriptEngine.eval(script);
-        Map contents = (Map) result;
-        return contents;
-        /*contents.forEach((k,v) ->{
-            System.out.println("Key => "+k +" value =>"+contents.get(k));
-        });
-
-        List data = (List) contents.get("data");
-        data.forEach(d ->{
-            Map matchDetail = (Map) d;
-            matchDetail.forEach((k,v) ->{
-                System.out.println("Key => "+k +" value =>"+matchDetail.get(k));
-            });
-        });*/
     }
 
 }

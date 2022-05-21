@@ -8,8 +8,8 @@ import java.util.concurrent.Executors;
 
 public class QuizServer {
     private final ServerSocket serverSocket;
+    private QuestionHandler questionHandler;
     private static final ExecutorService executorService = Executors.newCachedThreadPool();
-
     public QuizServer(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
@@ -21,9 +21,11 @@ public class QuizServer {
     public void start() {
         System.out.println("Listening for connections...");
         while (!this.serverSocket.isClosed()) {
+            questionHandler = new QuestionHandler();
+            executorService.execute(questionHandler);
             try {
                 Socket client = this.serverSocket.accept();
-                QuizClientHandler quizClientHandler = new QuizClientHandler(client);
+                QuizClientHandler quizClientHandler = new QuizClientHandler(client, questionHandler);
                 executorService.execute(quizClientHandler);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -38,6 +40,7 @@ public class QuizServer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        questionHandler.shutdown();
         executorService.shutdown();
     }
 }
