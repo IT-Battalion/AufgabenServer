@@ -16,6 +16,7 @@ public class QuestionHandler implements Runnable {
         while (running) {
             if (questions.size() < 20) {
                 questions.add(generateTask());
+                this.notifyAll();
             }
         }
     }
@@ -25,7 +26,12 @@ public class QuestionHandler implements Runnable {
     }
 
     public synchronized ITask getTask() {
-        ITask task = questions.get((int) (Math.random() * 20));
+        if (questions.size() == 0) {
+            try {
+                this.wait();
+            } catch (InterruptedException ignored) {}
+        }
+        ITask task = questions.get(0);
         this.questions.remove(task);
         return task;
     }
