@@ -1,0 +1,14 @@
+{
+  "questions": [
+    {
+      "taskText": "School in German?",
+      "taskAnswer": "Schule",
+      "taskName": "Schulfrage"
+    },
+    {
+      "taskText": "Was ist das objektiv besste Schulfach?",
+      "taskAnswer": "SEW",
+      "taskName": "Fachfrage"
+    }
+  ]
+}

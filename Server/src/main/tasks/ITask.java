@@ -1,4 +1,4 @@
-package tasks;
+package main.tasks;
 
 /**
  * This Interface is used for creating new Tasks.

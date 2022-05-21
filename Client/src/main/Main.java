@@ -1,11 +1,8 @@
-import java.io.BufferedReader;
+package main;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  * Das ist der Client, welcher sich zum Server verbindet und dann zufällige Fragen
@@ -23,9 +20,13 @@ public class Main {
                 Socket socket = new Socket(InetAddress.getByName(host), Integer.parseInt(port));
         ) {
             QuizClient client = new QuizClient(socket);
-            client.run();
+            Thread t1 = new Thread(client);
+            t1.start();
+            t1.join();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (InterruptedException ignored) {
+
         }
     }
 }

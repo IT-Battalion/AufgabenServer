@@ -1,4 +1,4 @@
-import tasks.QuizClientHandler;
+package main;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 
 public class QuizServer {
     private final ServerSocket serverSocket;
-    private static final ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private static final ExecutorService executorService = Executors.newCachedThreadPool();
 
     public QuizServer(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;

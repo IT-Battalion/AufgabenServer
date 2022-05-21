@@ -1,4 +1,4 @@
-package tasks;
+package main.tasks;
 
 public class RandomCalculationTask implements ITask {
     private String taskText = "Solve: ";
@@ -26,10 +26,10 @@ public class RandomCalculationTask implements ITask {
 
     @Override
     public ITask generateTask() {
-        double n1 = (Math.random() * 100000);
-        double n2 = (Math.random() * 100000);
+        long n1 = Math.round(Math.random() * 100000);
+        long n2 = Math.round(Math.random() * 100000);
         String operation = this.getRandomOperator();
-        this.taskText = n1 + " " + operation + " " + n2;
+        this.taskText = n1 + " " + operation + " " + n2 + " =";
         double solution;
         switch (operation) {
             case "-": {

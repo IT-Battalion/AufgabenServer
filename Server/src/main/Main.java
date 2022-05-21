@@ -1,8 +1,10 @@
+package main;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 
 /**
- * Die Main Klasse für den Server. Wird als erstes Argument kein Port beim
+ * Die main.Main Klasse für den Server. Wird als erstes Argument kein Port beim
  * starten Übergeben wird der Standard Port 2445 verwendet.
  *
  * @author Patrick Elias

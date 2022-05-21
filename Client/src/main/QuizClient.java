@@ -1,3 +1,5 @@
+package main;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -41,15 +43,22 @@ public class QuizClient implements Runnable {
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
         String task;
         try {
-            while (!this.socket.isClosed() && (task = this.reader.readLine()) != null) {
+            while (!this.socket.isClosed()) {
+                task = this.reader.readLine();
                 if (task.equalsIgnoreCase("*-*")) {
+                    System.out.println(task);
                     close();
-                    System.exit(0);
+                    break;
                 }
                 System.out.println(task);
-                String answer = console.readLine();
-                this.writer.write(answer);
+
+                if (task.endsWith("?") || task.endsWith("=")) {
+                    String answer = console.readLine();
+                    this.writer.write(answer);
+                    this.writer.println();
+                }
             }
+            System.out.println("Stopping Client...");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

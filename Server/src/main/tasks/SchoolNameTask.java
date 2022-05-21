@@ -1,4 +1,4 @@
-package tasks;
+package main.tasks;
 
 public class SchoolNameTask implements ITask {
     private String taskText;
