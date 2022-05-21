@@ -32,21 +32,17 @@ public class RandomCalculationTask implements ITask {
         this.taskText = n1 + " " + operation + " " + n2 + " =";
         double solution;
         switch (operation) {
-            case "-": {
+            case "-" -> {
                 solution = n1 - n2;
-                break;
             }
-            case "*": {
+            case "*" -> {
                 solution = n1 * n2;
-                break;
             }
-            case "/": {
+            case "/" -> {
                 solution = n1 / n2;
-                break;
             }
-            default: {
+            default -> {
                 solution = n1 + n2;
-                break;
             }
         }
         this.taskAnswer = String.valueOf(solution);

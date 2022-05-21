@@ -52,8 +52,13 @@ public class QuizClient implements Runnable {
                 }
                 System.out.println(task);
 
-                if (task.endsWith("?") || task.endsWith("=")) {
+                if (task.endsWith("?")) {
                     String answer = console.readLine();
+                    this.writer.write(answer);
+                    this.writer.println();
+                } else if (task.endsWith("=")) {
+                    String answer = autoAnswer(task);
+                    System.out.println(answer);
                     this.writer.write(answer);
                     this.writer.println();
                 }
@@ -62,5 +67,23 @@ public class QuizClient implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String autoAnswer(String task) {
+        String replaceSpace = task.replace(" ", "");
+        String replaceLastChar = replaceSpace.replace("=", "");
+        String[] numbers = replaceLastChar.split("[+\\-*/]");
+        int n1 = Integer.parseInt(numbers[0]);
+        int n2 = Integer.parseInt(numbers[1]);
+        if (task.contains("+")) {
+            return String.valueOf((double)(n1 + n2));
+        } else if (task.contains("-")) {
+            return String.valueOf((double)(n1 - n2));
+        } else if (task.contains("*")) {
+            return String.valueOf((double)(n1 * n2));
+        } else if (task.contains("/")) {
+            return String.valueOf((double)(n1 / n2));
+        }
+        return "Failed - Critical Server Error!";
     }
 }
